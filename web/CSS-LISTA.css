@@ -1,0 +1,68 @@
+/* ========== LISTA ========== */
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Configuração da barra de rolagem */
+#eventos-lista {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE e Edge */
+}
+
+/* Esconde a barra de rolagem no Chrome, Safari e Opera */
+#eventos-lista::-webkit-scrollbar {
+    display: none;
+}
+
+/* Estilo dos itens de lembrete */
+.alarme-item {
+    background: #fff;
+    padding: 13px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: font-size 0.3s, color 0.3s;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.alarme-item:hover {
+    font-size: 127%;
+    color: #007bff;
+}
+
+/* Estilo da data do lembrete */
+.alarme-item time {
+    font-size: 20px;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+/* Estilo do cabeçalho de ano */
+.ano-header {
+    color: white;
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-top: 5px;
+    padding: 3px 5px;
+    width: 95%;
+}
+
+/* Estilo do cabeçalho de mês */
+.mes-header {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 3px;
+    padding: 5px 10px;
+    background-color: transparent;
+    width: 95%;
+} 

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Aplicativo de Agenda Web">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="agendaweb">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>AGENDA - CRIAR</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="CSS-MENU.css">
+</head>
+<body>
+  <div class="container">
+    <div class="tela">
+      <!-- Área Superior -->
+      <div class="subtela1">
+        <div class="titulo1">
+          <h1>CRIAR</h1>
+        </div>
+        <div class="titulo2">
+          <a href="Menu.html" class="botoes">Voltar</a>
+        </div>
+      </div>
+
+      <!-- Área Principal -->
+      <div class="subtela2">
+        <div class="menu1">
+          <form id="formularioLembrete" action="#" method="post" class="form-criar" style="width: 90%; display: flex; flex-direction: column; gap: 15px;">
+            <!-- Campo do Título -->
+            <input type="text" 
+                   name="titulo" 
+                   id="titulo" 
+                   placeholder="Título" 
+                   required 
+                   style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"/>
+
+            <!-- Campos da Data -->
+            <div style="display: flex; gap: 10px;">
+              <input type="number" 
+                     name="dia" 
+                     id="dia" 
+                     placeholder="Dia" 
+                     min="1" 
+                     max="31" 
+                     required 
+                     style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"/>
+
+              <select name="mes" 
+                      id="mes" 
+                      required 
+                      style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;">
+                <option value="">Mês</option>
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+              </select>
+
+              <input type="number" 
+                     name="ano" 
+                     id="ano" 
+                     placeholder="Ano" 
+                     min="2024" 
+                     max="2100" 
+                     required 
+                     style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"/>
+            </div>
+
+            <!-- Campos da Hora -->
+            <div style="display: flex; gap: 10px;">
+              <input type="number" 
+                     name="hora" 
+                     id="hora" 
+                     placeholder="Hora" 
+                     min="0" 
+                     max="23" 
+                     required 
+                     style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"/>
+
+              <input type="number" 
+                     name="minuto" 
+                     id="minuto" 
+                     placeholder="Minuto" 
+                     min="0" 
+                     max="59" 
+                     required 
+                     style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"/>
+            </div>
+
+            <!-- Campo da Descrição -->
+            <textarea name="descricao" 
+                      id="descricao" 
+                      placeholder="Descrição" 
+                      rows="5" 
+                      style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; resize: vertical;"></textarea>
+
+            <!-- Botões de Ação -->
+            <div style="display: flex; justify-content: space-between;">
+              <button type="submit" class="botoes" style="flex: 1; margin-right: 10px;">Criar</button>
+              <a href="Menu.html" class="botoes" style="flex: 1; text-align: center; line-height: 38px;">Voltar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Inicialização quando o DOM estiver carregado
+    window.addEventListener('DOMContentLoaded', () => {
+      // Função para obter parâmetros da URL
+      function obterParametroURL(parametro) {
+        const parametrosURL = new URLSearchParams(window.location.search);
+        return parametrosURL.get(parametro);
+      }
+
+      // Preenche os campos com dados da URL, se disponíveis
+      const dataParametro = obterParametroURL('date');
+      const horaParametro = obterParametroURL('time');
+
+      if (dataParametro) {
+        const [ano, mes, dia] = dataParametro.split('-');
+        document.getElementById('ano').value = ano;
+        document.getElementById('mes').value = mes;
+        document.getElementById('dia').value = dia;
+      }
+      if (horaParametro) {
+        const [hora, minuto] = horaParametro.split(':');
+        document.getElementById('hora').value = hora;
+        document.getElementById('minuto').value = minuto;
+      }
+    });
+
+    // Manipulador do envio do formulário
+    document.getElementById('formularioLembrete').addEventListener('submit', function(evento) {
+      evento.preventDefault();
+
+      // Obtém os valores dos campos
+      const titulo = document.getElementById('titulo').value.trim();
+      const dia = document.getElementById('dia').value.padStart(2, '0');
+      const mes = document.getElementById('mes').value;
+      const ano = document.getElementById('ano').value;
+      const hora = document.getElementById('hora').value.padStart(2, '0');
+      const minuto = document.getElementById('minuto').value.padStart(2, '0');
+      const descricao = document.getElementById('descricao').value.trim();
+
+      // Validação dos campos obrigatórios
+      if (!titulo || !dia || !mes || !ano || !hora || !minuto) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      // Combina a data e a hora em um único valor
+      const dataHoraFormatada = `${ano}-${mes}-${dia}T${hora}:${minuto}`;
+
+      // Cria o objeto do lembrete
+      const lembrete = {
+        id: Date.now(),
+        title: titulo,
+        date: dataHoraFormatada,
+        description: descricao
+      };
+
+      // Salva o lembrete no localStorage
+      let lembretes = JSON.parse(localStorage.getItem('alarms')) || [];
+      lembretes.push(lembrete);
+      localStorage.setItem('alarms', JSON.stringify(lembretes));
+
+      // Redireciona para o menu
+      window.location.href = 'Menu.html';
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

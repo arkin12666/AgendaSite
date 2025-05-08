@@ -1,0 +1,145 @@
+/* ========== ESTILOS DO CALENDÁRIO ========== */
+.view-nav {
+    background-color: #007bff;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.view-content {
+    margin-top: 20px;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.day-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.35s ease;
+}
+
+.day-cell:hover {
+    background-color: #1e8bff;
+    font-size: 17px;
+}
+
+/* Grade de seleção de meses */
+.calendario {
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 85%;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.calendario a {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.box-day {
+    width: 100%;
+    height: 80%;
+    background-color: #101113;
+    border-radius: 4px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.week-line {
+    width: 100%;
+    height: 90%;
+    background-color: #333333;
+    border-radius: 3px;
+    margin-top: 2px;
+    display: flex;
+}
+
+.day-dot {
+    width: 100%;
+    height: 100%;
+    background-color: #666666;
+    border-radius: 10%;
+}
+
+.day-dot.has-alarm {
+    background-color: #ff0057;
+}
+
+.calendario a:hover {
+    background-color: #1e8bff;
+}
+
+.menu2 .caixa {
+    padding: 20px;
+    border-radius: 6px;
+    min-height: 450px;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 1.5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+/* Estilo dos cabeçalhos dos dias da semana */
+.day-header {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Estilo para dias de outros meses */
+.day-cell.other-month {
+  color: #666;
+  cursor: default;
+}
+
+/* Remove o efeito hover para dias de outros meses */
+.day-cell.other-month:hover {
+  background-color: transparent;
+}
+
+@media screen and (max-width: 765px) {
+    
+/* Grade de seleção de meses */
+.calendario {
+    min-height: 300px;
+    max-height: 300px;
+}
+
+.calendario a {
+    height: 100px;
+    min-height: 90%;
+    max-height: 100px;
+}
+}
+

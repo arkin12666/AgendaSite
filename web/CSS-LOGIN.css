@@ -1,0 +1,95 @@
+/* CORPO */
+* {
+    box-sizing: border-box;
+    font-family: 'Oswald', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 400px;
+}
+/* CORPO */
+
+/* CAIXA */
+.tela {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu {
+    background-color: #ffffff; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 85%; 
+    height: 400px;
+    margin: 20px 0;
+}
+/* CAIXA */
+
+
+.TextBoxs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+.conteudo {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.conteudo h5 {
+    margin-top: 10px; 
+}
+.outros{
+    margin-top: 60px;
+}
+
+
+input[type="text"],
+input[type="password"] {
+    padding: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 16px; 
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #5D61DE;
+    outline: none;
+}
+
+.botoes {
+    display: inline-block;
+    padding: 10px 20px; 
+    background-color: #007bff; 
+    color: white;
+    text-decoration: none; 
+    border-radius: 5px; 
+    transition: background-color 0.3s; 
+    margin-top: 10px; 
+}
+
+.botoes a{
+    color: #f4f4f4;
+}
+.botoes:hover {
+    background-color: #0056b3; 
+}
+/* 5D61DE */

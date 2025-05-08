@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>AGENDA - MENU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agenda Web App">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="CSS-MENU.css">
+  <link rel="stylesheet" href="CSS-LISTA.css">
+  <link rel="stylesheet" href="CSS-CALENDARIO.css">
+  <link rel="stylesheet" href="CSS-POPUP.css">
+</head>
+<body>
+  <div class="container">
+    <div class="tela">
+      <!-- Área Superior -->
+      <div class="subtela1">
+        <div class="titulo1"><h1>AGENDA</h1></div>
+        <div class="titulo2">
+          <a href="LOGIN-PRINCIPAL.html" class="botoes">Login</a>
+          <a href="LOGIN-CRIACAO.html" class="botoes">Criar Conta</a>
+        </div>
+      </div>
+
+      <!-- Área Principal -->
+      <div class="subtela2">
+        <!-- Lista de Lembretes -->
+        <div class="menu1">
+          <a href="PCriar.html" class="botoes">Criar</a>
+          <div class="caixa">
+            <div class="CAlarmes" id="eventos-lista">
+              <ul></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Área do Calendário -->
+        <div class="menu2">
+          <div class="caixa" id="calendar-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Elementos do Pop-up -->
+  <div id="popup-overlay"></div>
+  <div id="popup-container">
+    <button id="popup-close-btn" aria-label="Fechar">&times;</button>
+    <h3>Detalhes do Lembrete</h3>
+    <div id="popup-content"></div>
+    <button id="popup-delete-btn" aria-label="Excluir">Excluir</button>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Função para carregar os lembretes
+    function carregarLembretes() {
+      const listaEventos = document.getElementById('eventos-lista');
+      const lista = listaEventos.querySelector('ul');
+      lista.innerHTML = '';
+      const lembretes = JSON.parse(localStorage.getItem('alarms')) || [];
+
+      // Agrupa os lembretes por ano e mês
+      const agrupados = {};
+      lembretes.forEach(lembrete => {
+        const data = new Date(lembrete.date);
+        const ano = data.getFullYear();
+        const mes = data.toLocaleString('default', { month: 'long' });
+
+        if (!agrupados[ano]) agrupados[ano] = {};
+        if (!agrupados[ano][mes]) agrupados[ano][mes] = [];
+        agrupados[ano][mes].push(lembrete);
+      });
+
+      // Cria a estrutura hierárquica de anos e meses
+      Object.keys(agrupados).sort().forEach(ano => {
+        const cabecalhoAno = document.createElement('li');
+        cabecalhoAno.classList.add('ano-header');
+        cabecalhoAno.textContent = ano;
+
+        const setaAno = document.createElement('span');
+        setaAno.classList.add('toggle-arrow');
+        setaAno.textContent = '▲';
+        setaAno.style.float = 'right';
+        cabecalhoAno.appendChild(setaAno);
+
+        lista.appendChild(cabecalhoAno);
+
+        const meses = agrupados[ano];
+        Object.keys(meses).sort((a, b) => {
+          const ordem = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+          return ordem.indexOf(a.toLowerCase()) - ordem.indexOf(b.toLowerCase());
+        }).forEach(mes => {
+          const cabecalhoMes = document.createElement('li');
+          cabecalhoMes.classList.add('mes-header');
+          cabecalhoMes.textContent = mes;
+
+          const setaMes = document.createElement('span');
+          setaMes.classList.add('toggle-arrow');
+          setaMes.textContent = '▲';
+          setaMes.style.float = 'right';
+          cabecalhoMes.appendChild(setaMes);
+
+          lista.appendChild(cabecalhoMes);
+
+          // Ordena os lembretes por dia
+          meses[mes].sort((a, b) => {
+            const dataA = new Date(a.date);
+            const dataB = new Date(b.date);
+            return dataA - dataB;
+          });
+
+          // Adiciona os lembretes do mês
+          meses[mes].forEach(lembrete => {
+            const item = document.createElement('li');
+            item.classList.add('alarme-item');
+            const tempo = document.createElement('time');
+            tempo.setAttribute('datetime', lembrete.date);
+
+            const data = new Date(lembrete.date);
+            const dia = data.getDate();
+
+            tempo.textContent = dia;
+            item.appendChild(tempo);
+            item.appendChild(document.createTextNode(`: ${lembrete.title}`));
+            item.addEventListener('click', () => {
+              mostrarPopupLembrete(lembrete);
+            });
+            lista.appendChild(item);
+          });
+        });
+      });
+    }
+
+    // Função para mostrar o popup com detalhes do lembrete
+    function mostrarPopupLembrete(lembrete) {
+      const overlay = document.getElementById('popup-overlay');
+      const popup = document.getElementById('popup-container');
+      const conteudo = document.getElementById('popup-content');
+
+      conteudo.innerHTML = ` 
+        <p><strong>Título:</strong> ${lembrete.title}</p>
+        <p><strong>Data e Hora:</strong> ${new Date(lembrete.date).toLocaleString()}</p>
+        <p><strong>Descrição:</strong> ${lembrete.description || 'Sem descrição'}</p>
+      `;
+
+      const botaoExcluir = document.getElementById('popup-delete-btn');
+      botaoExcluir.onclick = () => excluirLembrete(lembrete.id);
+
+      overlay.style.display = 'block';
+      popup.style.display = 'block';
+    }
+
+    // Função para fechar o popup
+    function fecharPopupLembrete() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      document.getElementById('popup-container').style.display = 'none';
+    }
+
+    // Função para excluir um lembrete
+    function excluirLembrete(id) {
+      let lembretes = JSON.parse(localStorage.getItem('alarms')) || [];
+      lembretes = lembretes.filter(lembrete => lembrete.id !== id);
+      localStorage.setItem('alarms', JSON.stringify(lembretes));
+
+      fecharPopupLembrete();
+      carregarLembretes();
+    }
+
+    // Função para adicionar os listeners de expansão/contração
+    function adicionarListenersExpansao() {
+      const lista = document.querySelector('#eventos-lista ul');
+      if (!lista) return;
+
+      // Função auxiliar para alternar visibilidade dos elementos
+      function alternarIrmaos(elementoInicial, classesParada) {
+        let irmao = elementoInicial.nextElementSibling;
+        while (irmao && !classesParada.some(classe => irmao.classList.contains(classe))) {
+          if (irmao.style.display === 'none') {
+            irmao.style.display = '';
+          } else {
+            irmao.style.display = 'none';
+          }
+          irmao = irmao.nextElementSibling;
+        }
+      }
+
+      // Adiciona listeners aos cabeçalhos de ano
+      const cabecalhosAno = lista.querySelectorAll('li.ano-header');
+      cabecalhosAno.forEach(cabecalho => {
+        cabecalho.style.cursor = 'pointer';
+        cabecalho.addEventListener('click', () => {
+          alternarIrmaos(cabecalho, ['ano-header']);
+        });
+      });
+
+      // Adiciona listeners aos cabeçalhos de mês
+      const cabecalhosMes = lista.querySelectorAll('li.mes-header');
+      cabecalhosMes.forEach(cabecalho => {
+        cabecalho.style.cursor = 'pointer';
+        cabecalho.addEventListener('click', () => {
+          alternarIrmaos(cabecalho, ['ano-header', 'mes-header']);
+        });
+      });
+    }
+
+    // Inicialização quando o DOM estiver carregado
+    document.addEventListener("DOMContentLoaded", () => {
+      carregarLembretes();
+      adicionarListenersExpansao();
+      document.getElementById('popup-close-btn').addEventListener('click', fecharPopupLembrete);
+      document.getElementById('popup-overlay').addEventListener('click', fecharPopupLembrete);
+    });
+  </script>
+  <script src="calendario.js"></script>
+</body>
+</html>
